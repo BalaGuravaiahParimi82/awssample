@@ -3,8 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-      -mvn clean package
+      - mvn clean package
 artifacts:
   files:
-    -target/awssample.jar
+    - target/awssample.jar
   discard-paths: yes
