@@ -11,6 +11,6 @@ public class SampleController {
     @GetMapping("/Balu")
     public  String SampleMethod()
     {
-        return "Hello i am Fine!";
+        return "Hello Your Application is Successfully Deployed to AWS. Happy Coding!";
     }
 }
