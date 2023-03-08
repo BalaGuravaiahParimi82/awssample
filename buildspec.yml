@@ -1,10 +1,41 @@
-version: 0.2
-
 phases:
+  pre_build:
+    commands:
+      - mvn clean install
+      - echo Logging into Amazon ECR
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      # Give URI that you have copied from AWS ECR Repositoty
+      - REPOSITORY_URI= public.ecr.aws/c1a1o7q7/javatechieregistery
+      - COMMIT_HASH=$(echo $CODE_BUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '(print $2))
   build:
     commands:
-      - mvn clean package
+      - echo Build started on "date"
+      - echo Building the docker image...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo "Build Completed on "date"
+      - echo pushing the docker images
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"amssample","imageUri":%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
 artifacts:
   files:
-    - target/awssample.jar
-  discard-paths: yes
+    - imagedefinitions.json
+    - target/awsservice.jar
+
+#version: 0.2
+#
+#phases:
+#  build:
+#    commands:
+#      - mvn clean package
+#artifacts:
+#  files:
+#    - target/awssample.jar
+#  discard-paths: yes
