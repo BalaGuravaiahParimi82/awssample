@@ -6,7 +6,7 @@ phases:
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       # Give URI that you have copied from AWS ECR Repositoty
-      - REPOSITORY_URI= public.ecr.aws/c1a1o7q7/javatechieregistery
+      - REPOSITORY_URI= 304340177988.dkr.ecr.us-east-1.amazonaws.com/javatechieregistry1
       - COMMIT_HASH=$(echo $CODE_BUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '(print $2))
   build:
