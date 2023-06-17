@@ -28,14 +28,3 @@ artifacts:
   files:
     - imagedefinitions.json
     - target/awsservice.jar
-
-#version: 0.2
-#
-#phases:
-#  build:
-#    commands:
-#      - mvn clean package
-#artifacts:
-#  files:
-#    - target/awssample.jar
-#  discard-paths: yes
